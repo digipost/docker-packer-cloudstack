@@ -9,10 +9,10 @@ WORKDIR /go/src/github.com/mitchellh/packer
 RUN git checkout -b v0.7.5 v0.7.5 && go clean
 
 # Packer 0.7.5 does not build from source anymore, so get the binaries.
-RUN curl -s -L -o /tmp/packer_0.7.5_linux_amd64.zip https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip
 WORKDIR /go/bin
-RUN apt-get update && apt-get install -y unzip && apt-get clean
-RUN unzip -o /tmp/packer_0.7.5_linux_amd64.zip
+RUN apt-get update && apt-get install -y bsdtar && apt-get clean
+RUN curl -s -L https://dl.bintray.com/mitchellh/packer/packer_0.7.5_linux_amd64.zip | bsdtar --no-same-owner --no-same-permissions -xf-
+RUN chmod 0555 packer*
 
 # Build and install packer-cloudstack
 RUN go get github.com/schubergphilis/packer-cloudstack
