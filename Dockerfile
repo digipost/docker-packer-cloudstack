@@ -18,5 +18,8 @@ RUN chmod 0555 packer*
 RUN go get github.com/schubergphilis/packer-cloudstack
 RUN make -C $GOPATH/src/github.com/schubergphilis/packer-cloudstack dev
 
+RUN useradd -d /packer packer
+USER packer
 VOLUME /packer
-CMD ["/go/bin/packer"]
+WORKDIR /packer
+ENTRYPOINT ["/go/bin/packer"]
